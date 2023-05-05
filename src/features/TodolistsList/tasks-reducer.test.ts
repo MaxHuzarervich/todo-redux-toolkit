@@ -1,4 +1,4 @@
-import {addTaskAC, fetchTasksTC, removeTaskTC, tasksReducer, TasksStateType, updateTaskAC} from './tasks-reducer'
+import {addTaskTC, fetchTasksTC, removeTaskTC, tasksReducer, TasksStateType, updateTaskAC} from './tasks-reducer'
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from './todolists-reducer'
 import {TaskPriorities, TaskStatuses} from '../../api/todolists-api'
 
@@ -46,7 +46,6 @@ test('correct task should be deleted from correct array', () => {
     expect(endState['todolistId2'].every(t => t.id !== '2')).toBeTruthy()
 })
 test('correct task should be added to correct array', () => {
-    //const action = addTaskAC("juce", "todolistId2");
     let task = {
         todoListId: 'todolistId2',
         title: 'juce',
@@ -59,7 +58,7 @@ test('correct task should be added to correct array', () => {
         startDate: '',
         id: 'id exists'
     }
-    const action = addTaskAC(task)
+    const action = addTaskTC.fulfilled(task, 'requiredId', {title: task.title, todolistId: task.todoListId})
 
     const endState = tasksReducer(startState, action)
 
@@ -100,7 +99,7 @@ test('new array should be added when new todolist is added', () => {
 
 
     const keys = Object.keys(endState)
-    const newKey = keys.find(k => k != 'todolistId1' && k != 'todolistId2')
+    const newKey = keys.find(k => k !== 'todolistId1' && k !== 'todolistId2')
     if (!newKey) {
         throw Error('new key should be added')
     }
