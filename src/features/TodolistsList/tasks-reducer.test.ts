@@ -1,5 +1,5 @@
 import {addTaskTC, fetchTasksTC, removeTaskTC, tasksReducer, TasksStateType, updateTaskTC} from './tasks-reducer'
-import {addTodolistAC, fetchTodolistsTC, removeTodolistTC} from './todolists-reducer'
+import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from './todolists-reducer'
 import {TaskPriorities, TaskStatuses} from '../../api/todolists-api'
 
 let startState: TasksStateType = {}
@@ -88,14 +88,15 @@ test('title of specified task should be changed', () => {
     expect(endState['todolistId2'][0].title).toBe('bread')
 })
 test('new array should be added when new todolist is added', () => {
-    const action = addTodolistAC({
+    const todolist = {
         todolist: {
             id: 'blabla',
             title: 'new todolist',
             order: 0,
             addedDate: ''
         }
-    })
+    }
+    const action = addTodolistTC.fulfilled(todolist, 'requestId', todolist.todolist.title)
 
     const endState = tasksReducer(startState, action)
 
